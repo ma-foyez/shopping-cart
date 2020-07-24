@@ -13,10 +13,10 @@
 <body>
 
     <section>
-        <div class="container">
+        <div class="container" id="cartContainer">
             <div class="cart">
                 <div class="col-md-12 col-lg-10 mx-auto">
-                    <div class="cart-item">
+                    <div class="cart-item" id="cartItem1">
                         <div class="row">
                             <div class="col-md-7 center-item">
                                 <img src="images/product-1.png" alt="">
@@ -25,17 +25,19 @@
 
                             <div class="col-md-5 center-item">
                                 <div class="input-group number-spinner">
-                                    <button class="btn btn-default" id="mobileDecrease"><i class="fas fa-minus"></i></button>
+                                    <button class="btn btn-default" id="mobileDecrease"><i
+                                            class="fas fa-minus"></i></button>
                                     <input id="mobileInput" type="text" class="form-control text-center" value="1">
-                                    <button class="btn btn-default" id="mobileIncrease"><i class="fas fa-plus"></i></button>
+                                    <button class="btn btn-default" id="mobileIncrease"><i
+                                            class="fas fa-plus"></i></button>
                                 </div>
                                 <h5>$ <span id="currentMobilePrice">1219</span></h5>
-                                <img src="images/remove.png" alt="" class="remove-item">
+                                <img src="images/remove.png" alt="" class="remove-item" id="removeItem1">
                             </div>
                         </div>
                     </div>
 
-                    <div class="cart-item">
+                    <div class="cart-item" id="cartItem2">
                         <div class="row">
                             <div class="col-md-7 center-item mx-auto">
                                 <img src="images/product-2.png" alt="">
@@ -43,13 +45,15 @@
                             </div>
                             <div class="col-md-5 center-item">
                                 <div class="input-group number-spinner">
-                                    <button class="btn btn-default" id="coverDecrease"><i class="fas fa-minus"></i></button>
+                                    <button class="btn btn-default" id="coverDecrease"><i
+                                            class="fas fa-minus"></i></button>
                                     <input type="text" id="coverInput" class="form-control text-center" value="1">
-                                    <button class="btn btn-default" id="coverIncrease"><i class="fas fa-plus"></i></button>
+                                    <button class="btn btn-default" id="coverIncrease"><i
+                                            class="fas fa-plus"></i></button>
 
                                 </div>
                                 <h5>$ <span id="currentCoverPrice">59</span></h5>
-                                <img src="images/remove.png" alt="" class="remove-item">
+                                <img src="images/remove.png" alt="" class="remove-item" id="removeItem2">
                             </div>
                         </div>
                     </div>
@@ -71,14 +75,73 @@
                         </div>
                     </div>
                     <div class="col-md-12 pt-4 pb-4">
-                        <button type="button" class="btn btn-success check-out">Check Out</button>
+                        <button type="button" class="btn btn-success check-out" id="checkOutBtn">Check Out</button>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="checkOutContainer">
+            <div class="row d-flex justify-content-center m-5 p-5">
+                <div class="col-md-8 checkout text-center">
+                    <h2>Well Done!</h2><br>
+                    <h3>Your order has been successfully receive.</h3><br>
+                    <h4>Thank You...!</h4><br>
+
+                    <button class="btn btn-info" id="goBtn">Go Back</button>
+
                 </div>
             </div>
         </div>
     </section>
     <!--Script-->
     <script>
+        //remove items 
+        const removeItem1 = document.getElementById('removeItem1');
+        removeItem1.addEventListener('click', function() {
+            const cartItem1 = document.getElementById('cartItem1');
+            cartItem1.style.display = "none";
+            removeCheckOut('currentMobilePrice');
+        })
+
+        const removeItem2 = document.getElementById('removeItem2');
+        removeItem2.addEventListener('click', function() {
+            const cartItem2 = document.getElementById('cartItem2');
+            cartItem2.style.display = "none";
+            removeCheckOut('currentCoverPrice');
+        })
+
+        // check out remove amount, it's works when we remove items from list
+        function removeCheckOut(id) {
+            const subAmount = document.getElementById(id).innerText;
+            const convertAmount = parseFloat(subAmount);
+            const subTotal = document.getElementById('subTotal').innerText;
+            const convertSubTotal = parseFloat(subTotal);
+            const removeAmount = convertSubTotal - convertAmount;
+            document.getElementById('subTotal').innerText = removeAmount;
+            const taxField = (removeAmount / 100) * 5;
+            const convertTax = parseFloat(taxField).toFixed(2);
+            const tax = document.getElementById('tax').innerText = convertTax;
+            const taxAmount = parseFloat(tax);
+            const totalRemoveAmount = removeAmount + taxAmount;
+            const totalAmount = document.getElementById('totalAmount').innerText = totalRemoveAmount
+        }
+        // check out result display 
+        const checkOutBtn = document.getElementById('checkOutBtn');
+        checkOutBtn.addEventListener('click', function() {
+                const cartContainer = document.getElementById('cartContainer');
+                cartContainer.style.display = "none";
+                document.getElementById('checkOutContainer').style.display = "block";
+
+            })
+            // check out result display 
+        const goBtn = document.getElementById('goBtn');
+        goBtn.addEventListener('click', function() {
+            const cartContainer = document.getElementById('cartContainer');
+            cartContainer.style.display = "block";
+            document.getElementById('checkOutContainer').style.display = "none";
+
+        })
+
         //check out balance
         checkOut('subTotal');
 
