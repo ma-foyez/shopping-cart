@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shopping Cart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <section>
+        <div class="container">
+            <div class="cart">
+                <div class="col-md-12 col-lg-10 mx-auto">
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item">
+                                <img src="images/product-1.png" alt="">
+                                <h5>iPhone 11 128GB Black</h5>
+                            </div>
+
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button class="btn btn-default" id="mobileDecrease"><i class="fas fa-minus"></i></button>
+                                    <input id="mobileInput" type="text" class="form-control text-center" value="1">
+                                    <button class="btn btn-default" id="mobileIncrease"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <h5>$ <span id="currentMobilePrice">1219</span></h5>
+                                <img src="images/remove.png" alt="" class="remove-item">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item mx-auto">
+                                <img src="images/product-2.png" alt="">
+                                <h5>iPhone 11 Silicone Case - Black</h5>
+                            </div>
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button class="btn btn-default" id="coverDecrease"><i class="fas fa-minus"></i></button>
+                                    <input type="text" id="coverInput" class="form-control text-center" value="1">
+                                    <button class="btn btn-default" id="coverIncrease"><i class="fas fa-plus"></i></button>
+
+                                </div>
+                                <h5>$ <span id="currentCoverPrice">59</span></h5>
+                                <img src="images/remove.png" alt="" class="remove-item">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+
+                            <div class="col-md-8">
+                                <h5>Subtotal: </h5>
+                                <h5>Tax:</h5>
+                                <h5>Total:</h5>
+                            </div>
+
+                            <div class="col-md-4 status">
+                                <h5>$ <span id="subTotal">1219</span></h5>
+                                <h5>$ <span id="tax">0</span></h5>
+                                <h5>$ <span id="totalAmount">1219</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pt-4 pb-4">
+                        <button type="button" class="btn btn-success check-out">Check Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Script-->
+    <script>
+        //check out balance
+        checkOut('subTotal');
+
+        // mobile add handler
+        const mobileIncrease = document.getElementById('mobileIncrease');
+        mobileIncrease.addEventListener('click', function() {
+                const totalSize = addItems('mobileInput');
+                const currentMobilePrice = document.getElementById('currentMobilePrice').innerText = 1219;
+                const priceNumber = parseFloat(currentMobilePrice);
+                const Price = IncreasePrice('currentMobilePrice', totalSize, priceNumber);
+
+                //checkout balance
+                checkOut('subTotal');
+            })
+            //mobile remove handler
+        const mobileDecrease = document.getElementById('mobileDecrease');
+        mobileDecrease.addEventListener('click', function() {
+            const totalSize = removeItems('mobileInput');
+            if (totalSize <= 0) {
+                alert("invalid selected");
+                document.getElementById('mobileInput').value = 0;
+            } else {
+                const currentMobilePrice = document.getElementById('currentMobilePrice').innerText = 1219;
+                const priceNumber = parseFloat(currentMobilePrice);
+                const Price = DecreasePrice('currentMobilePrice', totalSize, priceNumber);
+
+                //checkout balance
+                checkOut('subTotal');
+
+            }
+        })
+
+        // cover add handler
+        const coverIncrease = document.getElementById('coverIncrease');
+        coverIncrease.addEventListener('click', function() {
+                const totalSize = addItems('coverInput');
+                const currentCoverPrice = document.getElementById('currentCoverPrice').innerText = 59;
+                const priceNumber = parseFloat(currentCoverPrice);
+                const Price = IncreasePrice('currentCoverPrice', totalSize, priceNumber);
+
+                //checkout balance
+                checkOut('subTotal');
+            })
+            // cover remove handler
+        const coverDecrease = document.getElementById('coverDecrease');
+        coverDecrease.addEventListener('click', function() {
+            const totalSize = removeItems('coverInput');
+            if (totalSize <= 0) {
+                alert("invalid selected");
+                document.getElementById('coverInput').value = 0;
+            } else {
+                const currentCoverPrice = document.getElementById('currentCoverPrice').innerText = 59;
+                const priceNumber = parseFloat(currentCoverPrice);
+                const Price = DecreasePrice('currentCoverPrice', totalSize, priceNumber);
+
+                //checkout balance
+                checkOut('subTotal');
+            }
+        })
+
+
+        // mobile & cover add function
+        function addItems(id) {
+            const addItems = document.getElementById(id).value++;
+            const addItemsNumber = parseFloat(addItems);
+            return addItemsNumber;
+        }
+
+        // Mobile & cover remove function
+        function removeItems(id) {
+            const removeItems = document.getElementById(id).value--;
+            const removeItemsNumber = parseFloat(removeItems);
+            return removeItemsNumber;
+        }
+
+        // //increase mobile & cover price
+        function IncreasePrice(id, totalSize, priceNumber) {
+            const addTotalMobilePrice = priceNumber * (totalSize + 1);
+            document.getElementById(id).innerText = addTotalMobilePrice;
+
+        }
+        // //decrease mobile & cover price
+        function DecreasePrice(id, totalSize, priceNumber) {
+            const removeTotalPrice = priceNumber * (totalSize - 1);
+            document.getElementById(id).innerText = removeTotalPrice;
+        }
+
+        // // final checkout balance
+        function checkOut(id) {
+            const mobile = document.getElementById('currentMobilePrice').innerText;
+            const conMobile = parseFloat(mobile);
+            const cover = document.getElementById('currentCoverPrice').innerText;
+            const conCover = parseFloat(cover);
+            const total = conMobile + conCover;
+            const subTotal = document.getElementById('subTotal').innerText = total;
+            const tax = (subTotal / 100) * 5;
+            const convertTax = parseFloat(tax).toFixed(2)
+            document.getElementById('tax').innerText = convertTax;
+            const totalAmount = subTotal + tax;
+            document.getElementById('totalAmount').innerText = totalAmount;
+        }
+    </script>
+</body>
+
+</html>
